@@ -1,11 +1,11 @@
 <template>
   <main>
     <h1>請輸入要翻譯的文字</h1>
-    <n-input v-model:value="textArea" type="textarea" placeholder="基本的 Textarea" round clearable />
+    <n-input v-model:value="textArea" type="textarea" placeholder="請輸入要翻譯的文字" round clearable />
     <div class="lang-list">
       <n-button v-for="lang in langList" :key="lang" strong :type="selectLang !== lang ? 'tertiary' : 'primary'" @click="selectLang = lang">{{ lang }}</n-button>
     </div>
-    <div style="margin-top: 100px; margin-bottom: 50px">
+    <div style="margin-top: 50px; margin-bottom: 50px">
       <n-button :render-icon="cashIcon" type="info" :loading="loading" @click="completion">翻譯</n-button>
     </div>
     <div v-if="resData">
@@ -24,26 +24,33 @@ onMounted(() => {
   // completion();
 });
 const configuration = new Configuration({
-  apiKey: "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",
+  apiKey: "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",
 });
 delete configuration.baseOptions.headers["User-Agent"];
 const openai = new OpenAIApi(configuration);
 const textArea = ref("");
 const selectLang = ref("");
-const resData = ref<string | undefined>("");
-const prompt = computed(() => `${textArea.value} 轉換成${selectLang.value}語言`);
-const langList = reactive(["繁體", "簡體", "英文"]);
+const resData = ref<string | null>("");
+const prompt = computed(() => {
+  return `${textArea.value}
+  以上這段文字轉換成${selectLang.value}
+  `;
+});
+const langList = reactive(["中文繁體", "中文簡體", "英文"]);
 const loading = ref(false);
 const completionParams = reactive({
   model: "text-davinci-003",
   prompt: prompt,
+  temperature: 0.1,
+  max_tokens: 1000,
 });
 async function completion() {
   try {
     loading.value = true;
     const res = await openai.createCompletion(completionParams);
     loading.value = false;
-    resData.value = res.data.choices[0].text;
+    const text = res.data.choices[0].text as string;
+    resData.value = regexFormat(text);
   } catch (error: any) {
     loading.value = false;
     if (error.response) {
@@ -53,6 +60,12 @@ async function completion() {
       console.log(error.message);
     }
   }
+}
+function regexFormat(str: string) {
+  const regex = /\n(.+)/;
+  const match = str.match(regex);
+  const result = match ? match[1] : null;
+  return result;
 }
 function renderIcon(iconType: any) {
   return () =>
@@ -65,8 +78,11 @@ const cashIcon = renderIcon(LangIcon);
 
 <style scoped>
 main {
-  max-width: 1200px;
+  max-width: 800px;
   margin: 0 auto;
+}
+.lang-list {
+  margin-top: 20px;
 }
 .lang-list button {
   margin: 0 6px;
