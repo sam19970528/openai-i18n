@@ -1,9 +1,10 @@
 <template>
   <div class="lang-list">
-    <n-button v-for="lang in langList" :key="lang" strong :type="form.selectLang !== lang ? 'tertiary' : 'primary'" @click="selectLangHandle(lang)">{{ lang }}</n-button>
+    <n-button v-for="lang in langList" :key="lang" strong :type="!includes(form.selectLang, lang) ? 'tertiary' : 'primary'" @click="selectLangHandle(lang)">{{ lang }}</n-button>
   </div>
 </template>
 <script setup lang="ts">
+import { includes, without } from "lodash";
 import { Form } from "../types";
 interface Props {
   form: Form;
@@ -45,7 +46,11 @@ const langList = reactive([
   "波蘭文",
 ]);
 function selectLangHandle(lang: string) {
-  props.form.selectLang = lang;
+  if (includes(props.form.selectLang, lang)) {
+    props.form.selectLang = without(props.form.selectLang, lang);
+  } else {
+    props.form.selectLang.push(lang);
+  }
 }
 </script>
 <style scoped>

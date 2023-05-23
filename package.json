@@ -13,10 +13,12 @@
     "axios": "^1.4.0",
     "lodash": "^4.17.21",
     "openai": "^3.2.1",
+    "uuid": "^9.0.0",
     "vue": "^3.2.47"
   },
   "devDependencies": {
     "@types/node": "^20.2.3",
+    "@types/uuid": "^9.0.1",
     "@vitejs/plugin-vue": "^4.1.0",
     "naive-ui": "^2.34.4",
     "typescript": "^5.0.2",

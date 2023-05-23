@@ -17,5 +17,8 @@ declare module '@vue/runtime-core' {
     NCard: typeof import('naive-ui')['NCard']
     NDialogProvider: typeof import('naive-ui')['NDialogProvider']
     NInput: typeof import('naive-ui')['NInput']
+    NSkeleton: typeof import('naive-ui')['NSkeleton']
+    ResultCard: typeof import('./src/components/ResultCard.vue')['default']
+    Skeleton: typeof import('./src/components/Skeleton.vue')['default']
   }
 }
