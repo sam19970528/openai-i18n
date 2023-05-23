@@ -25,7 +25,7 @@ export default defineConfig({
     alias: [
       {
         find: "@",
-        replacement: resolve(__dirname, "../src"),
+        replacement: resolve(__dirname, "./src"),
       },
     ],
     // 可以在import時忽略檔名
@@ -35,7 +35,9 @@ export default defineConfig({
     open: true,
     proxy: {
       "/api": {
-        target: "https://api.openai.com",
+        target: "https://api.openai.com/v1/chat/completions",
+        changeOrigin: true,
+        rewrite: path => path.replace(/^\/api/, ""),
       },
     },
   },
