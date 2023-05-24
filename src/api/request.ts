@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export function useRequest() {
   const api = "/api";
-  const apiKey = "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";
+  const apiKey = "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";
   const { dialog } = createDiscreteApi(["dialog"]);
   const form = reactive<Form>({
     userInput: "",
@@ -77,17 +77,19 @@ export function useRequest() {
       btnLoading.value = false;
       if (error.response) {
         const errorStatus = error.response.status;
+        const findResult = find(result, i => i.id === id) as Result;
         switch (errorStatus) {
           case 401:
             handleError("API_KEY失效，請重新綁定");
             break;
           case 500:
-            const findResult = find(result, i => i.id === id) as Result;
-            findResult.result = "服務器錯誤請重新再試";
+            findResult.result = "服務器錯誤請重新嘗試";
             findResult.status = 500;
             break;
           case 429:
-            handleError("次數太多，請稍候嘗試");
+            const errorText = "請求次數過多，請稍候嘗試";
+            findResult.result = errorText;
+            findResult.status = 429;
             break;
         }
       } else {
