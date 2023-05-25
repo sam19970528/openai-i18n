@@ -13,7 +13,7 @@
     </template>
   </n-card>
   <div style="margin-bottom: 30px">
-    <n-button v-if="item.status === 200" :render-icon="copyIcon" type="success" class="btn-full-width">複製文字</n-button>
+    <n-button v-if="copyBtnShow" :render-icon="copyIcon" type="success" class="btn-full-width" @click="copyResult">複製文字</n-button>
     <n-button v-else-if="isErrorStatus" type="error" class="btn-full-width">再試一次</n-button>
   </div>
 </template>
@@ -23,12 +23,15 @@ import { Result } from "@/types";
 import { renderIcon } from "../hook";
 import { CopyOutline as CopyIcon } from "@vicons/ionicons5";
 import { includes } from "lodash";
+import copy from "copy-to-clipboard";
+import { messageSuccess } from "../hook";
 
 interface Props {
   item: Result;
 }
 const props = defineProps<Props>();
 const writerResult = ref("");
+const copyBtnShow = ref(false);
 const copyIcon = renderIcon(CopyIcon);
 // 打字機效果
 function typeWriter() {
@@ -41,7 +44,9 @@ function typeWriter() {
         index++;
         setTimeout(typing, speed);
       } else {
+        // 打字機效果結束才出現複製文字按鈕
         resolve();
+        copyBtnShow.value = true;
       }
     };
     typing();
@@ -49,6 +54,11 @@ function typeWriter() {
 }
 const errCode = [429, 500];
 const isErrorStatus = computed(() => includes(errCode, props.item.status));
+function copyResult() {
+  const result = props.item.result;
+  copy(result);
+  messageSuccess("複製成功!");
+}
 watch(
   () => props.item.result,
   newVal => {

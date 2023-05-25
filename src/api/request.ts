@@ -1,13 +1,12 @@
 import axios from "axios";
-import { createDiscreteApi } from "naive-ui";
 import { Form, Result } from "@/types";
 import { find } from "lodash";
 import { v4 as uuidv4 } from "uuid";
+import { dialogError } from "../hook";
 
 export function useRequest() {
   const api = "/api";
-  const apiKey = "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";
-  const { dialog } = createDiscreteApi(["dialog"]);
+  const apiKey = "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";
   const form = reactive<Form>({
     userInput: "",
     selectLang: [],
@@ -38,10 +37,10 @@ export function useRequest() {
   const result = reactive<Result[]>([]);
   function translateHandle() {
     if (!form.userInput) {
-      handleError("請輸入要翻譯的文字");
+      dialogError("請輸入要翻譯的文字");
       return;
     } else if (!form.selectLang.length) {
-      handleError("請選擇至少一種語言");
+      dialogError("請選擇至少一種語言");
       return;
     }
     form.selectLang.forEach(item => {
@@ -80,7 +79,7 @@ export function useRequest() {
         const findResult = find(result, i => i.id === id) as Result;
         switch (errorStatus) {
           case 401:
-            handleError("API_KEY失效，請重新綁定");
+            dialogError("API_KEY失效，請重新綁定");
             break;
           case 500:
             findResult.result = "服務器錯誤請重新嘗試";
@@ -93,17 +92,11 @@ export function useRequest() {
             break;
         }
       } else {
-        handleError(error.message);
+        dialogError(error.message);
       }
     }
   }
-  function handleError(content: string) {
-    dialog.error({
-      title: "错误",
-      content,
-      positiveText: "確定",
-    });
-  }
+
   return {
     request,
     form,
