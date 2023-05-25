@@ -8,3 +8,8 @@ export interface Result {
   result: string;
   status: number;
 }
+
+export interface Optional {
+  errorRetryId: string;
+  errorRetryText: string;
+}

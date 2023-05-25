@@ -13,23 +13,35 @@
     </template>
   </n-card>
   <div style="margin-bottom: 30px">
-    <n-button v-if="copyBtnShow" :render-icon="copyIcon" type="success" class="btn-full-width" @click="copyResult">複製文字</n-button>
-    <n-button v-else-if="isErrorStatus" type="error" class="btn-full-width">再試一次</n-button>
+    <n-button v-if="copyBtnShow && item.status === 200" :render-icon="copyIcon" type="success" class="btn-full-width" @click="copyResult">複製文字</n-button>
+    <n-button v-else-if="isErrorStatus" type="error" class="btn-full-width" @click="retry">再試一次</n-button>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { Result } from "@/types";
+import { Result, Optional } from "@/types";
 import { renderIcon } from "../hook";
 import { CopyOutline as CopyIcon } from "@vicons/ionicons5";
 import { includes } from "lodash";
 import copy from "copy-to-clipboard";
 import { messageSuccess } from "../hook";
+import { useRequest } from "@/api/request";
 
 interface Props {
   item: Result;
+  originInput: string;
 }
 const props = defineProps<Props>();
+const { generateMessage, retryRequest } = useRequest();
+const optional: Optional = {
+  errorRetryId: props.item.id,
+  errorRetryText: props.originInput,
+};
+async function retry() {
+  writerResult.value = "";
+  const { messages } = generateMessage(props.item.language, optional);
+  await retryRequest(messages, props.item);
+}
 const writerResult = ref("");
 const copyBtnShow = ref(false);
 const copyIcon = renderIcon(CopyIcon);

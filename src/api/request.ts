@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Form, Result } from "@/types";
+import { Form, Result, Optional } from "@/types";
 import { find } from "lodash";
 import { v4 as uuidv4 } from "uuid";
 import { dialogError } from "../hook";
@@ -12,7 +12,9 @@ export function useRequest() {
     selectLang: [],
   });
 
-  function generateMessage(language: string) {
+  function generateMessage(language: string, optional?: Optional) {
+    const id = optional?.errorRetryId || uuidv4();
+    const userContent = optional?.errorRetryText || form.userInput;
     const messages = [
       {
         role: "system",
@@ -24,11 +26,11 @@ export function useRequest() {
       },
       {
         role: "user",
-        content: `${form.userInput}`,
+        content: `${userContent}`,
       },
     ];
     return {
-      id: uuidv4(),
+      id,
       messages,
       language,
     };
@@ -74,26 +76,50 @@ export function useRequest() {
       findResult.status = 200;
     } catch (error: any) {
       btnLoading.value = false;
-      if (error.response) {
-        const errorStatus = error.response.status;
-        const findResult = find(result, i => i.id === id) as Result;
-        switch (errorStatus) {
-          case 401:
-            dialogError("API_KEY失效，請重新綁定");
-            break;
-          case 500:
-            findResult.result = "服務器錯誤請重新嘗試";
-            findResult.status = 500;
-            break;
-          case 429:
-            const errorText = "請求次數過多，請稍候嘗試";
-            findResult.result = errorText;
-            findResult.status = 429;
-            break;
-        }
-      } else {
-        dialogError(error.message);
+      const findResult = find(result, i => i.id === id) as Result;
+      catchError(error, findResult);
+    }
+  }
+  async function retryRequest(messages: any[], retryObj: Result) {
+    retryObj.result = "";
+    retryObj.status = 0;
+    const requestParams = {
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+      },
+    };
+    const params = {
+      messages,
+      model: "gpt-3.5-turbo",
+      max_tokens: 256,
+    };
+    try {
+      const { data } = await axios.post(api, params, requestParams);
+      retryObj.result = data.choices[0].message.content;
+      retryObj.status = 200;
+    } catch (error) {
+      catchError(error, retryObj);
+    }
+  }
+  function catchError(error: any, findResult: Result) {
+    if (error.response) {
+      const errorStatus = error.response.status;
+      switch (errorStatus) {
+        case 401:
+          dialogError("API_KEY失效，請重新綁定");
+          break;
+        case 500:
+          findResult.result = "服務器錯誤請重新嘗試";
+          findResult.status = 500;
+          break;
+        case 429:
+          const errorText = "請求次數過多，請稍候嘗試";
+          findResult.result = errorText;
+          findResult.status = 429;
+          break;
       }
+    } else {
+      dialogError(error.message);
     }
   }
 
@@ -103,5 +129,7 @@ export function useRequest() {
     result,
     btnLoading,
     translateHandle,
+    retryRequest,
+    generateMessage,
   };
 }

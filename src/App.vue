@@ -8,7 +8,7 @@
     </div>
     <div v-if="result.length !== 0">
       <template v-for="item in result">
-        <ResultCard :item="item" />
+        <ResultCard :item="item" :origin-input="form.userInput" />
       </template>
     </div>
   </main>
