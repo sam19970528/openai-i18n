@@ -9,9 +9,12 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    BindAPIKey: typeof import('./src/components/BindAPIKey.vue')['default']
+    BindKey: typeof import('./src/components/BindKey.vue')['default']
     Content: typeof import('./src/components/Content.vue')['default']
     Dialog: typeof import('./src/components/Dialog.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
+    Introduction: typeof import('./src/components/Introduction.vue')['default']
     LanguageList: typeof import('./src/components/LanguageList.vue')['default']
     NButton: typeof import('naive-ui')['NButton']
     NCard: typeof import('naive-ui')['NCard']

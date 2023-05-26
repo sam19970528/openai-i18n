@@ -25,14 +25,14 @@ import { CopyOutline as CopyIcon } from "@vicons/ionicons5";
 import { includes } from "lodash";
 import copy from "copy-to-clipboard";
 import { messageSuccess } from "../hook";
-import { useRequest } from "@/api/request";
+import { useChat } from "@/chat";
 
 interface Props {
   item: Result;
   originInput: string;
 }
 const props = defineProps<Props>();
-const { generateMessage, retryRequest } = useRequest();
+const { generateMessage, retryChat } = useChat();
 const optional: Optional = {
   errorRetryId: props.item.id,
   errorRetryText: props.originInput,
@@ -40,7 +40,7 @@ const optional: Optional = {
 async function retry() {
   writerResult.value = "";
   const { messages } = generateMessage(props.item.language, optional);
-  await retryRequest(messages, props.item);
+  await retryChat(messages, props.item);
 }
 const writerResult = ref("");
 const copyBtnShow = ref(false);

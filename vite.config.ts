@@ -35,7 +35,7 @@ export default defineConfig({
     open: true,
     proxy: {
       "/api": {
-        target: "https://api.openai.com/v1/chat/completions",
+        target: "https://api.openai.com",
         changeOrigin: true,
         rewrite: path => path.replace(/^\/api/, ""),
       },

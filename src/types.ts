@@ -13,3 +13,12 @@ export interface Optional {
   errorRetryId: string;
   errorRetryText: string;
 }
+export interface Message {
+  role: "system" | "user";
+  content: string;
+}
+export interface GenerateMsg {
+  id: string;
+  messages: Message[];
+  language: string;
+}
