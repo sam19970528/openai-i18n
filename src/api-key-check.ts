@@ -14,7 +14,7 @@ export function useAPIKeyCheck() {
   async function inputKeyHandle(inputKey: string) {
     const res = await apiKeyCheck(inputKey);
     if (res.status === 200) {
-      messageSuccess("綁定API_KEY成功!");
+      messageSuccess("綁定API Key成功!");
       sessionStorage.setItem("api-key", inputKey);
       return true;
     } else return false;

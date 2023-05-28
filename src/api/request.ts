@@ -18,7 +18,7 @@ service.interceptors.response.use(
   error => {
     const status = error.response.status;
     if (status === 401) {
-      dialogError("API_KEY失效，請重新綁定");
+      dialogError("API Key失效，請重新綁定");
     }
     return Promise.reject(error);
   }

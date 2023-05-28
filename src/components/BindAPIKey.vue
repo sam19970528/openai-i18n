@@ -1,6 +1,6 @@
 <template>
-  <h2>輸入API_KEY啟用服務</h2>
-  <n-input v-model:value="inputKey" type="text" placeholder="輸入API_KEY" :loading="inputLoading" :status="inputStatus" />
+  <h2>輸入API Key啟用服務</h2>
+  <n-input v-model:value="inputKey" type="text" placeholder="輸入API Key" :loading="inputLoading" :status="inputStatus" />
 </template>
 <script lang="ts" setup>
 import { useAPIKeyCheck } from "@/api-key-check";
