@@ -2,7 +2,7 @@ import axios, { InternalAxiosRequestConfig, AxiosResponse } from "axios";
 import { dialogError } from "../hook";
 
 const service = axios.create({
-  baseURL: "/api",
+  baseURL: "https://api.openai.com",
 });
 service.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   const apiKey = sessionStorage.getItem("api-key");
