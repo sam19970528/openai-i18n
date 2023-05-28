@@ -18,13 +18,8 @@
 <script setup lang="ts">
 import { LanguageOutline as LangIcon } from "@vicons/ionicons5";
 import { useChat } from "./chat";
-import LanguageList from "@/components/LanguageList.vue";
-import ResultCard from "./components/ResultCard.vue";
 import { renderIcon } from "./hook";
-import Introduction from "./components/Introduction.vue";
-import BindAPIKey from "@/components/BindAPIKey.vue";
 
-onMounted(() => {});
 const { form, result, translateHandle } = useChat();
 const maxLength = 256;
 const langIcon = renderIcon(LangIcon);
