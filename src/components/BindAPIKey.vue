@@ -9,11 +9,15 @@ const inputKey = ref("");
 const inputLoading = ref(false);
 const inputStatus = ref<FormValidationStatus>();
 const { inputKeyHandle } = useAPIKeyCheck();
+const emit = defineEmits(["showHandle"]);
 watch(inputKey, async newVal => {
   if (newVal && newVal.length > 30) {
     try {
       inputLoading.value = true;
-      await inputKeyHandle(newVal);
+      const result = await inputKeyHandle(newVal);
+      if (result) {
+        emit("showHandle", result);
+      }
       inputLoading.value = false;
       inputStatus.value = "success";
     } catch (error) {

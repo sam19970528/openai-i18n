@@ -1,14 +1,16 @@
 import axios, { InternalAxiosRequestConfig, AxiosResponse } from "axios";
 import { dialogError } from "../hook";
 
-// const apiKey = "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";
 const service = axios.create({
   baseURL: "/api",
 });
-// service.interceptors.request.use((config: InternalAxiosRequestConfig) => {
-//   config.headers.Authorization = `Bearer ${apiKey}`;
-//   return config;
-// });
+service.interceptors.request.use((config: InternalAxiosRequestConfig) => {
+  const apiKey = sessionStorage.getItem("api-key");
+  if (apiKey) {
+    config.headers.Authorization = `Bearer ${apiKey}`;
+  }
+  return config;
+});
 service.interceptors.response.use(
   (response: AxiosResponse) => {
     return response;

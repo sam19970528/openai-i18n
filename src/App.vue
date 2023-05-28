@@ -1,7 +1,7 @@
 <template>
   <main>
     <Introduction />
-    <BindAPIKey />
+    <BindAPIKey v-if="!bindAPIKeySuccess" @showHandle="showBindKeyHandle" />
     <n-input style="margin-top: 30px" v-model:value="form.userInput" type="textarea" placeholder="請輸入要翻譯的文字" :autosize="{ minRows: 4 }" :maxlength="maxLength" show-count round clearable />
     <LanguageList :form="form" />
     <div style="margin-top: 50px; margin-bottom: 50px">
@@ -28,6 +28,10 @@ onMounted(() => {});
 const { form, result, translateHandle } = useChat();
 const maxLength = 256;
 const langIcon = renderIcon(LangIcon);
+const bindAPIKeySuccess = ref(sessionStorage.getItem("api-key") ? true : false);
+function showBindKeyHandle(result: boolean) {
+  bindAPIKeySuccess.value = result;
+}
 </script>
 
 <style>

@@ -3,7 +3,7 @@
   <h2>使用說明:</h2>
   <ul>
     <ol>
-      1. 請使用自己註冊的open AI的API_KEY來進行綁定API服務，可參考此教學
+      1. 請使用自己註冊的open AI的API_KEY來進行綁定API服務，可參考此教學<a href="https://www.soft4fun.net/tech/ai/openai-api-key.htm" target="_blank">連結</a>
     </ol>
     <ol>
       2. 輸入要翻譯的文字最多不超過256個字母
