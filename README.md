@@ -1,18 +1,29 @@
-# Vue 3 + TypeScript + Vite
+# Open AI 多國語言翻譯網
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+使用 Open AI API 的 chat 模型製作出的多國語翻譯工具
 
-## Recommended IDE Setup
+## 安裝方法
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+要安裝此專案，請遵循以下步驟：
 
-## Type Support For `.vue` Imports in TS
+1. 確保你的電腦已經安裝了 Node.js 環境。如果還沒有安裝，你可以在[官方網站](https://nodejs.org)下載並安裝。
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+2. 使用終端機進入專案的根目錄。
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+3. 在終端機中運行以下命令，以安裝專案所需的相依套件：
 
-1. Disable the built-in TypeScript Extension
-   1. Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-   2. Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+```shell
+npm install
+
+```
+
+## 啟動專案
+
+要在本地環境運行此專案，請執行以下步驟：
+
+1. 在終端機中運行以下命令，以啟動本地開發伺服器:
+
+```shell
+npm run dev
+
+```
